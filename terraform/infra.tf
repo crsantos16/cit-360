@@ -152,27 +152,14 @@ resource "aws_route_table_association" "public_subnet_c_rt_assoc" {
     route_table_id = "${aws_route_table.public_routing_table.id}"
 }
 
-# Create a new instance of the latest Ubuntu 14.04 on an
-# t2.micro node with an AWS Tag naming it "HelloWorld"
-
-data "aws_ami" "ubuntu" {
-  most_recent = true
-  filter {
-    name = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"]
-  }
-  filter {
-    name = "virtualization-type"
-    values = ["hvm"]
-  }
-  owners = ["099720109477"] # Canonical
-}
-
-resource "aws_instance" "web" {
-    ami = "${data.aws_ami.ubuntu.id}"
+# EC2 Instance 
+resource "aws_instance" "AMI_Instance" {
+    ami = "ami-b04e92d0"
+    associate_public_ip_address = true
+    subnet_id = "${aws_subnet.public_subnet_a.id}"
     instance_type = "t2.micro"
     tags {
-        Name = "HelloWorld"
+        Name = "AMI Instance"
     }
 }
 
